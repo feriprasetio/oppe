@@ -1,7 +1,17 @@
 # OPPE Digital — RSUD SSMA
 
-Standalone prototype, independent of AUREKA. This repository is public: do not add real staff data, signatures, credentials, or completed OPPE documents.
+Standalone prototype, separate from AUREKA and without Supabase. Static frontend intended for GitHub Pages. Production institutional use requires a separate secured backend, authentication, PostgreSQL database and private object storage.
 
-See the project files for the profession-driven assessment UI, 49 profession profiles and source-preserving PDF templates. **The current HTML print preview is not yet a verified pixel-identical populated output.** The next implementation step is per-profession calibrated overlay maps using the supplied PDF backgrounds.
+## Prototype
+- Profession-driven assessment UI and basic draft scoring.
+- Editable browser-local staff/settings and signatory placeholders.
+- 49 source-specific profession forms and 493 indicator rows are being added to the catalogue.
+- Source PDF backgrounds, overlay renderer and per-profession coordinate calibration are still being integrated.
 
-Run locally with `python -m http.server 8000` and open http://localhost:8000. GitHub Pages can be enabled from `main` / root.
+## Run locally
+`python -m http.server 8000` then open `http://localhost:8000`.
+
+## Important
+This is not production-ready. Do not use real staff data, actual signatures or completed OPPE records in this public repository. Trigger strings are not automatically scoring rules. The currently wired print output is not pixel-identical to the source DOCX. A faithful output requires source-page PDF backgrounds, calibrated overlays for every profession, and visual regression tests.
+
+See `docs/ARCHITECTURE.md` and `docs/SOURCE-MAPPING.md`.
