@@ -1,1 +1,1000 @@
-[]
+[
+  {
+    "id": "profession-01",
+    "name": "Dokter Spesialis Anak",
+    "source_table_index": 0,
+    "indicators": [
+      {
+        "category": "Perilaku",
+        "number": 1,
+        "name": "Keluhan dari pasien/pengguna layanan",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 2,
+        "name": "Keluhan dari rekan sejawat",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 3,
+        "name": "Keluhan dari manajemen rumah sakit",
+        "trigger": "≥ 1 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 1,
+        "name": "Menghadiri pertemuan ilmiah/profesi",
+        "trigger": "< 3 kali/tahun",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 2,
+        "name": "Pelaksanaan tugas pengembangan mutu/profesi",
+        "trigger": "< 1 kali/periode",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 1,
+        "name": "Waktu tunggu pelayanan pasien Rawat Jalan",
+        "trigger": "> 60 menit",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 2,
+        "name": "Kelengkapan assessment pediatrik <24 jam",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 3,
+        "name": "Kepatuhan penilaian status gizi/tumbuh kembang sesuai indikasi",
+        "trigger": "< 95%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 4,
+        "name": "Kelengkapan rekam medis dan resume medis",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 5,
+        "name": "Kepatuhan clinical pathway/protokol pediatrik",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      }
+    ],
+    "signatory_slots": [
+      "Mengetahui, Ketua Sub Komite Mutu Profesi",
+      "Penilai, Kepala KSM Anak",
+      "Ketua Komite Medik ______________________________ Nama / NIP",
+      "Kepala Bidang Pelayanan Medik dan Keperawatan ______________________________ Nama / NIP"
+    ]
+  },
+  {
+    "id": "profession-02",
+    "name": "Dokter Spesialis Anestesiologi",
+    "source_table_index": 6,
+    "indicators": [
+      {
+        "category": "Perilaku",
+        "number": 1,
+        "name": "Keluhan dari pasien/pengguna layanan",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 2,
+        "name": "Keluhan dari rekan sejawat",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 3,
+        "name": "Keluhan dari manajemen rumah sakit",
+        "trigger": "≥ 1 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 1,
+        "name": "Menghadiri pertemuan ilmiah/profesi",
+        "trigger": "< 3 kali/tahun",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 2,
+        "name": "Pelaksanaan tugas pengembangan mutu/profesi",
+        "trigger": "< 1 kali/periode",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 1,
+        "name": "Kelengkapan asesmen pra-anestesi sebelum tindakan",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 2,
+        "name": "Kepatuhan checklist keselamatan anestesi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 3,
+        "name": "Kelengkapan catatan anestesi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 4,
+        "name": "Kepatuhan serah terima pasien pasca-anestesi dengan SBAR",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 5,
+        "name": "Kepatuhan pemantauan dan dokumentasi nyeri pascaoperasi",
+        "trigger": "< 95%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      }
+    ],
+    "signatory_slots": [
+      "Mengetahui, Ketua Sub Komite Mutu Profesi",
+      "Penilai, Kepala KSM Anestesiologi",
+      "Ketua Komite Medik ______________________________ Nama / NIP",
+      "Kepala Bidang Pelayanan Medik dan Keperawatan ______________________________ Nama / NIP"
+    ]
+  },
+  {
+    "id": "profession-03",
+    "name": "Dokter Spesialis Bedah",
+    "source_table_index": 12,
+    "indicators": [
+      {
+        "category": "Perilaku",
+        "number": 1,
+        "name": "Keluhan dari pasien/pengguna layanan",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 2,
+        "name": "Keluhan dari rekan sejawat",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 3,
+        "name": "Keluhan dari manajemen rumah sakit",
+        "trigger": "≥ 1 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 1,
+        "name": "Menghadiri pertemuan ilmiah/profesi",
+        "trigger": "< 3 kali/tahun",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 2,
+        "name": "Pelaksanaan tugas pengembangan mutu/profesi",
+        "trigger": "< 1 kali/periode",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 1,
+        "name": "Kepatuhan surgical safety checklist",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 2,
+        "name": "Kelengkapan asesmen praoperasi <24 jam",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 3,
+        "name": "Kelengkapan laporan operasi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 4,
+        "name": "Kepatuhan site marking/time-out sebelum insisi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 5,
+        "name": "Kepatuhan antibiotik profilaksis sesuai indikasi",
+        "trigger": "< 95%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      }
+    ],
+    "signatory_slots": [
+      "Mengetahui, Ketua Sub Komite Mutu Profesi",
+      "Penilai, Kepala KSM Bedah",
+      "Ketua Komite Medik ______________________________ Nama / NIP",
+      "Kepala Bidang Pelayanan Medik dan Keperawatan ______________________________ Nama / NIP"
+    ]
+  },
+  {
+    "id": "profession-04",
+    "name": "Dokter Spesialis Bedah Subspesialis Onkologi",
+    "source_table_index": 18,
+    "indicators": [
+      {
+        "category": "Perilaku",
+        "number": 1,
+        "name": "Keluhan dari pasien/pengguna layanan",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 2,
+        "name": "Keluhan dari rekan sejawat",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 3,
+        "name": "Keluhan dari manajemen rumah sakit",
+        "trigger": "≥ 1 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 1,
+        "name": "Menghadiri pertemuan ilmiah/profesi",
+        "trigger": "< 3 kali/tahun",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 2,
+        "name": "Pelaksanaan tugas pengembangan mutu/profesi",
+        "trigger": "< 1 kali/periode",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 1,
+        "name": "Kelengkapan asesmen dan staging keganasan",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 2,
+        "name": "Kepatuhan surgical safety checklist",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 3,
+        "name": "Kelengkapan laporan operasi dan spesimen patologi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 4,
+        "name": "Kepatuhan dokumentasi informed consent tindakan onkologi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 5,
+        "name": "Kepatuhan clinical pathway kanker sesuai indikasi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      }
+    ],
+    "signatory_slots": [
+      "Mengetahui, Ketua Sub Komite Mutu Profesi",
+      "Penilai, Kepala KSM Bedah",
+      "Ketua Komite Medik ______________________________ Nama / NIP",
+      "Kepala Bidang Pelayanan Medik dan Keperawatan ______________________________ Nama / NIP"
+    ]
+  },
+  {
+    "id": "profession-05",
+    "name": "Dokter Spesialis Bedah Saraf",
+    "source_table_index": 24,
+    "indicators": [
+      {
+        "category": "Perilaku",
+        "number": 1,
+        "name": "Keluhan dari pasien/pengguna layanan",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 2,
+        "name": "Keluhan dari rekan sejawat",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 3,
+        "name": "Keluhan dari manajemen rumah sakit",
+        "trigger": "≥ 1 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 1,
+        "name": "Menghadiri pertemuan ilmiah/profesi",
+        "trigger": "< 3 kali/tahun",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 2,
+        "name": "Pelaksanaan tugas pengembangan mutu/profesi",
+        "trigger": "< 1 kali/periode",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 1,
+        "name": "Kelengkapan asesmen neurologis praoperasi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 2,
+        "name": "Kepatuhan surgical safety checklist",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 3,
+        "name": "Kelengkapan dokumentasi tindakan dan implant/drain",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 4,
+        "name": "Kepatuhan pemantauan status neurologis pascaoperasi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 5,
+        "name": "Kelengkapan rekam medis dan resume medis",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      }
+    ],
+    "signatory_slots": [
+      "Mengetahui, Ketua Sub Komite Mutu Profesi",
+      "Penilai, Kepala KSM Bedah Saraf",
+      "Ketua Komite Medik ______________________________ Nama / NIP",
+      "Kepala Bidang Pelayanan Medik dan Keperawatan ______________________________ Nama / NIP"
+    ]
+  },
+  {
+    "id": "profession-06",
+    "name": "Dokter Spesialis Jantung dan Pembuluh Darah",
+    "source_table_index": 30,
+    "indicators": [
+      {
+        "category": "Perilaku",
+        "number": 1,
+        "name": "Keluhan dari pasien/pengguna layanan",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 2,
+        "name": "Keluhan dari rekan sejawat",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 3,
+        "name": "Keluhan dari manajemen rumah sakit",
+        "trigger": "≥ 1 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 1,
+        "name": "Menghadiri pertemuan ilmiah/profesi",
+        "trigger": "< 3 kali/tahun",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 2,
+        "name": "Pelaksanaan tugas pengembangan mutu/profesi",
+        "trigger": "< 1 kali/periode",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 1,
+        "name": "Kelengkapan asesmen risiko kardiovaskular",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 2,
+        "name": "Kepatuhan tata laksana sindrom koroner akut sesuai pathway",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 3,
+        "name": "Kelengkapan dokumentasi interpretasi pemeriksaan jantung",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 4,
+        "name": "Kepatuhan rekonsiliasi obat kardiovaskular",
+        "trigger": "< 95%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 5,
+        "name": "Kelengkapan rekam medis dan discharge plan",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      }
+    ],
+    "signatory_slots": [
+      "Mengetahui, Ketua Sub Komite Mutu Profesi",
+      "Penilai, Kepala KSM Jantung dan Pembuluh Darah",
+      "Ketua Komite Medik ______________________________ Nama / NIP",
+      "Kepala Bidang Pelayanan Medik dan Keperawatan ______________________________ Nama / NIP"
+    ]
+  },
+  {
+    "id": "profession-07",
+    "name": "Dokter Spesialis Kulit dan Kelamin",
+    "source_table_index": 36,
+    "indicators": [
+      {
+        "category": "Perilaku",
+        "number": 1,
+        "name": "Keluhan dari pasien/pengguna layanan",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 2,
+        "name": "Keluhan dari rekan sejawat",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 3,
+        "name": "Keluhan dari manajemen rumah sakit",
+        "trigger": "≥ 1 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 1,
+        "name": "Menghadiri pertemuan ilmiah/profesi",
+        "trigger": "< 3 kali/tahun",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 2,
+        "name": "Pelaksanaan tugas pengembangan mutu/profesi",
+        "trigger": "< 1 kali/periode",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 1,
+        "name": "Kelengkapan asesmen lesi/diagnosis dermatologi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 2,
+        "name": "Kepatuhan identifikasi dan dokumentasi lokasi lesi",
+        "trigger": "< 95%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 3,
+        "name": "Kelengkapan informed consent tindakan/prosedur",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 4,
+        "name": "Kepatuhan pencegahan infeksi pada tindakan",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 5,
+        "name": "Kelengkapan rekam medis dan rencana tindak lanjut",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      }
+    ],
+    "signatory_slots": [
+      "Mengetahui, Ketua Sub Komite Mutu Profesi",
+      "Penilai, Kepala KSM Kulit dan Kelamin",
+      "Ketua Komite Medik ______________________________ Nama / NIP",
+      "Kepala Bidang Pelayanan Medik dan Keperawatan ______________________________ Nama / NIP"
+    ]
+  },
+  {
+    "id": "profession-08",
+    "name": "Dokter Spesialis Mata",
+    "source_table_index": 42,
+    "indicators": [
+      {
+        "category": "Perilaku",
+        "number": 1,
+        "name": "Keluhan dari pasien/pengguna layanan",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 2,
+        "name": "Keluhan dari rekan sejawat",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 3,
+        "name": "Keluhan dari manajemen rumah sakit",
+        "trigger": "≥ 1 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 1,
+        "name": "Menghadiri pertemuan ilmiah/profesi",
+        "trigger": "< 3 kali/tahun",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 2,
+        "name": "Pelaksanaan tugas pengembangan mutu/profesi",
+        "trigger": "< 1 kali/periode",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 1,
+        "name": "Kelengkapan pemeriksaan mata sesuai diagnosis",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 2,
+        "name": "Kepatuhan verifikasi pasien/lokasi tindakan mata",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 3,
+        "name": "Kelengkapan informed consent tindakan/operasi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 4,
+        "name": "Kelengkapan catatan operasi/tindakan",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 5,
+        "name": "Kepatuhan evaluasi pascatindakan dan follow-up",
+        "trigger": "< 95%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      }
+    ],
+    "signatory_slots": [
+      "Mengetahui, Ketua Sub Komite Mutu Profesi",
+      "Penilai, Kepala KSM Mata",
+      "Ketua Komite Medik ______________________________ Nama / NIP",
+      "Kepala Bidang Pelayanan Medik dan Keperawatan ______________________________ Nama / NIP"
+    ]
+  },
+  {
+    "id": "profession-09",
+    "name": "Dokter Spesialis Obstetri dan Ginekologi",
+    "source_table_index": 48,
+    "indicators": [
+      {
+        "category": "Perilaku",
+        "number": 1,
+        "name": "Keluhan dari pasien/pengguna layanan",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 2,
+        "name": "Keluhan dari rekan sejawat",
+        "trigger": "> 2 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Perilaku",
+        "number": 3,
+        "name": "Keluhan dari manajemen rumah sakit",
+        "trigger": "≥ 1 kali",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 1,
+        "name": "Menghadiri pertemuan ilmiah/profesi",
+        "trigger": "< 3 kali/tahun",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Pengembangan Profesionalisme",
+        "number": 2,
+        "name": "Pelaksanaan tugas pengembangan mutu/profesi",
+        "trigger": "< 1 kali/periode",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval",
+        "period_policy": "needs_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 1,
+        "name": "Kelengkapan asesmen risiko obstetri/ginekologi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
+        "number": 2,
+        "name": "Kepatuhan pemantauan persalinan dan dokumentasi partograf bila indikasi",
+        "trigger": "< 100%",
+        "unit": "",
+        "measurement_type": "manual",
+        "score_rule": null,
+        "scoring_status": "pending_institutional_approval"
+      },
+      {
+        "category": "Kinerja Klinis/Profesional Primer",
