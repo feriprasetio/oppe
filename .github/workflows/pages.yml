@@ -74,3 +74,25 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify published Pages site
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --retry 12 --retry-all-errors --retry-delay 5 "$PAGES_URL/" -o /tmp/oppe-index.html
+          curl --fail --silent --show-error "$PAGES_URL/src/styles.css" -o /tmp/oppe-styles.css
+          curl --fail --silent --show-error "$PAGES_URL/src/app.js" -o /tmp/oppe-app.js
+          curl --fail --silent --show-error "$PAGES_URL/data/professions.json" -o /tmp/oppe-professions.json
+          python3 - <<'PY'
+          import json
+          with open('/tmp/oppe-professions.json', encoding='utf-8') as f:
+              data = json.load(f)
+          assert len(data) == 49, f'Expected 49 professions, found {len(data)}'
+          indicators = sum(len(p.get('indicators', [])) for p in data)
+          assert indicators == 493, f'Expected 493 indicators, found {indicators}'
+          print(f'Published catalogue OK: {len(data)} professions / {indicators} indicators')
+          PY
+          grep -q 'src/styles.css' /tmp/oppe-index.html
+          grep -q 'src/app.js' /tmp/oppe-index.html
+          echo "Pages URL and all frontend assets respond successfully: $PAGES_URL"
