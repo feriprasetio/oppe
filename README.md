@@ -1,17 +1,31 @@
-# OPPE Digital — RSUD SSMA
+# OPPE Digital — RSUD Sultan Syarif Mohamad Alkadrie
 
-Standalone prototype, separate from AUREKA and without Supabase. Static frontend intended for GitHub Pages. Production institutional use requires a separate secured backend, authentication, PostgreSQL database and private object storage.
+Standalone web application prototype, independent of AUREKA and without Supabase.
 
-## Prototype
-- Profession-driven assessment UI and basic draft scoring.
-- Editable browser-local staff/settings and signatory placeholders.
-- 49 source-specific profession forms and 493 indicator rows are being added to the catalogue.
-- Source PDF backgrounds, overlay renderer and per-profession coordinate calibration are still being integrated.
+**Published site:** https://feriprasetio.github.io/oppe/
+
+## Current deployment
+- GitHub Pages deployment from GitHub Actions.
+- Post-deploy smoke test checks the public HTML, CSS, JavaScript and profession catalogue.
+- Source catalogue contains 49 profession profiles and 493 indicators/trigger texts.
+- Profession-filtered staff selection and local-browser draft form are implemented as a prototype.
 
 ## Run locally
-`python -m http.server 8000` then open `http://localhost:8000`.
+Serve the repository root over HTTP (ES modules and fetch do not work reliably from `file://`):
 
-## Important
-This is not production-ready. Do not use real staff data, actual signatures or completed OPPE records in this public repository. Trigger strings are not automatically scoring rules. The currently wired print output is not pixel-identical to the source DOCX. A faithful output requires source-page PDF backgrounds, calibrated overlays for every profession, and visual regression tests.
+```bash
+python -m http.server 8000
+```
 
-See `docs/ARCHITECTURE.md` and `docs/SOURCE-MAPPING.md`.
+Open http://localhost:8000.
+
+## Important limitations
+- Current staff and assessment records use browser localStorage; data is not yet shared across users or devices.
+- Signature upload, authenticated approval, server database and durable audit history are not yet implemented.
+- The 49 source-background PDF pages and coordinate maps are not yet committed to this repository.
+- Current print output is a basic HTML reconstruction, not a pixel-identical reproduction of the source DOCX/PDF.
+- Trigger wording is preserved as source data but is not automatically treated as a pass/fail rule. Scoring rules require institutional approval.
+
+Do not enter real staff personal data or upload authentic signatures until private backend storage, authentication and access controls are implemented.
+
+See `docs/ARCHITECTURE.md`, `docs/SOURCE-MAPPING.md` and `docs/STATUS.md`.
