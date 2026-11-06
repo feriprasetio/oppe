@@ -1,27 +1,76 @@
 name: Deploy OPPE Digital
+
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
+
 permissions:
   contents: read
   pages: write
   id-token: write
+
 concurrency:
-  group: pages
+  group: github-pages
   cancel-in-progress: true
+
 jobs:
+  build:
+    name: Build static site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate required site files
+        run: |
+          set -euo pipefail
+          test -s index.html
+          test -s src/styles.css
+          test -s src/app.js
+          test -f data/professions.json
+          echo "Required OPPE frontend files are present."
+
+      - name: Assemble Pages artifact
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          cp index.html _site/index.html
+          cp -R src data _site/
+          if [ -d assets ]; then cp -R assets _site/; fi
+          if [ -d docs ]; then cp -R docs _site/; fi
+          touch _site/.nojekyll
+          cat > _site/404.html <<'EOF'
+          <!doctype html>
+          <html lang="id">
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Halaman tidak ditemukan — OPPE Digital</title>
+          <body style="font:16px Arial,sans-serif;max-width:640px;margin:12vh auto;padding:24px;color:#182230">
+            <h1>Halaman tidak ditemukan</h1>
+            <p>Halaman yang diminta tidak tersedia.</p>
+            <p><a href="./">Kembali ke OPPE Digital</a></p>
+          </body>
+          </html>
+          EOF
+          echo "Pages artifact:"
+          find _site -maxdepth 3 -type f -print | sort
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
   deploy:
+    name: Deploy to GitHub Pages
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    needs: build
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
