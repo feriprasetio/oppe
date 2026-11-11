@@ -32,6 +32,13 @@ jobs:
           test -f data/professions.json
           echo "Required OPPE frontend files are present."
 
+      - name: Check JavaScript syntax
+        run: |
+          set -euo pipefail
+          for f in src/*.js; do node --check "$f"; done
+          python3 -c "import json; d=json.load(open('data/professions.json', encoding='utf-8')); assert len(d) == 49"
+          echo "JavaScript syntax and catalogue OK."
+
       - name: Assemble Pages artifact
         run: |
           set -euo pipefail

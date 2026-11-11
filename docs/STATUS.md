@@ -14,6 +14,18 @@
 - Browser-local staff, draft assessment and basic scoring summary.
 - Basic print preview.
 
+## Perbaikan 11 November 2026
+- Kursor/fokus tidak lagi hilang saat pindah kolom indikator (sebelumnya seluruh tabel dirender ulang tiap perubahan).
+- Indikator dengan nomor ganda (Fisioterapis, Kinerja Klinis no. 4) tidak lagi saling menimpa nilai.
+- Cetak memakai penandatangan sesuai profesi dari katalog (signatory_slots), lengkap nama, NIP, dan gambar tanda tangan; sebelumnya selalu "Kepala Ruangan / Ketua Komite Tenaga Kesehatan Lainnya".
+- Cetak otomatis kini berjalan (penutup tag script sebelumnya rusak).
+- Unggah tanda tangan kini benar-benar tersimpan (diperkecil, lokal di browser) dan bisa dihapus.
+- Bulk Export mencetak dokumen lengkap per periode yang dicentang dalam satu file, bukan halaman placeholder dan tidak lagi terkunci 2024–2026.
+- Data Staf punya pilihan profesi sendiri, daftar staf tampil saat halaman dibuka, dan staf bisa dihapus.
+- Ringkasan menampilkan jumlah indikator yang belum dinilai; cetakan diberi tanda DRAF bila belum lengkap.
+- Validasi tahun, penanganan penyimpanan browser penuh, id HTML ganda "staff", dan tampilan HP yang melebar ke samping diperbaiki.
+- CI memeriksa sintaks JavaScript sebelum deploy.
+
 ## Not yet production-ready
 - Source background PDFs for all 49 professions are not committed in this repository.
 - Per-profession coordinate calibration and source-faithful PDF overlay are not implemented.
