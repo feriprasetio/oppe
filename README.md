@@ -21,3 +21,6 @@ A local IndexedDB archive preserves the exact bytes of a manually checked, exter
 
 ## V6 private approval portal (option B)
 See [backend deployment guide](backend/README.md). A separate authorized HTTPS server is required; Pages only provides a local request export and portal link. Each enrolled signer reviews and approves exact PDF(s) using their own account and optional own image upload; no automatic Excel signature replay, no certified TTE. The backend blocks incomplete/future periods and self-approval. No live backend deployment is included.
+
+## V6.1 export UX
+The only individual signed-PDF export is next to the assessment save action. It downloads the exact current approved PDF from the local archive or explains the missing conditions inline; it never generates a falsely signed document. The unsigned/export-for-signing tools and external archive form are collapsed by default. Bulk signed ZIP remains in the archive section. The private portal requires separate deployment and does not synchronize signed PDFs directly to Pages yet.

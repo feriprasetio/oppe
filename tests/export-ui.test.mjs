@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';import fs from 'node:fs';
+const html=fs.readFileSync('index.html','utf8'),app=fs.readFileSync('src/app.js','utf8');
+const section=html.match(/<section id="assessment"[\s\S]*?<\/section>/)?.[0]||'';
+assert(section.includes('id="finalOne"'));assert(section.includes('Ekspor PDF bertanda tangan'));assert(!html.includes('id="preview"'));
+assert.equal((html.match(/id="finalOne"/g)||[]).length,1);assert.equal((html.match(/id="finalAll"/g)||[]).length,1);
+assert(html.includes('<details id="unsignedTools">'));assert(html.includes('id="externalArchive"'));
+assert(!app.includes("$('preview')"));assert(app.includes("$('finalOne').onclick=exportSignedOne"));
+assert(app.includes('if(r?.current){download(r.bytes'));assert(app.includes('finalReadiness(state,s,p)'));
+const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);assert.equal(new Set(ids).size,ids.length);
+console.log('Export UX wiring and unique signed export controls passed');
