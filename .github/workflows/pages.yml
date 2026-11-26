@@ -123,4 +123,6 @@ jobs:
           curl --fail --silent --show-error "$PAGES_URL/vendor/jszip.min.js" -o /tmp/oppe-jszip.js
           grep -q 'src/styles.css' /tmp/oppe-index.html
           grep -q 'src/app.js' /tmp/oppe-index.html
+          grep -q 'id="exportPdf"' /tmp/oppe-index.html
+          ! grep -q 'id="privateApproval"' /tmp/oppe-index.html
           echo "Pages URL and all frontend assets respond successfully: $PAGES_URL"

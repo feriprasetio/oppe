@@ -4,3 +4,5 @@
 .final-section{margin-top:24px;border-top:1px solid var(--border);padding-top:18px}.verify-box{display:flex;align-items:flex-start;gap:10px;background:#f2f7fa;border:1px solid var(--border);border-radius:8px;padding:12px}.verify-box input{width:auto;margin:4px 0}.ready{color:#246b43;font-weight:650}#finalReadiness details{font-size:12px;color:#526878}#finalReadiness li{margin:5px 0}#signedStatus{overflow-wrap:anywhere}
 
 .inline-export-state{margin:8px 0 12px;padding:10px 13px;border:1px solid var(--border);border-radius:8px;background:#f5f8fa;font-size:13px;line-height:1.6;overflow-wrap:anywhere}.inline-export-state[data-state=ready]{color:#246b43;background:#f0f8f3}.inline-export-state[data-state=pending]{color:#795316;background:#fffaf0}.inline-export-state a{color:#176b83;font-weight:650;text-decoration:underline}#unsignedTools,#externalArchive{margin-top:14px}#externalArchive summary{margin-bottom:8px}
+
+.export-scope{min-width:175px;max-width:100%;align-self:flex-end}.actions:has(#exportPdf){align-items:flex-end}.period-details{margin-top:8px}.period-details .periods{margin-top:10px}

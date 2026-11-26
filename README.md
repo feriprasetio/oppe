@@ -24,3 +24,6 @@ See [backend deployment guide](backend/README.md). A separate authorized HTTPS s
 
 ## V6.1 export UX
 The only individual signed-PDF export is next to the assessment save action. It downloads the exact current approved PDF from the local archive or explains the missing conditions inline; it never generates a falsely signed document. The unsigned/export-for-signing tools and external archive form are collapsed by default. Bulk signed ZIP remains in the archive section. The private portal requires separate deployment and does not synchronize signed PDFs directly to Pages yet.
+
+## V7 simplified local export
+One export button beneath the assessment generates a 12-page PDF from saved records; the scope selector allows a ZIP for all staff. Approval and portal configuration panels are removed from the public interface. Existing matching signed archives are reused byte-for-byte if available; otherwise PDFs retain unsigned and ongoing-period status, with mapped signer names and empty signature lines. No automatic signature replay or approval claims. Existing local data and signed archives are not deleted by the upgrade. The separate backend source remains in the repository but is not part of the public UI.
