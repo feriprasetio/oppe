@@ -1,4 +1,4 @@
-import {PERIODS,GROUPS,ROLES,AREAS,indicators,key,score,signerSet,status} from './model.js';
+import {PERIODS,GROUPS,ROLES,AREAS,indicators,key,score,signerSet,status,resolvedItem} from './model.js';
 const W=609.9874,H=936;
 const clean=s=>String(s??'').replace(/[≥]/g,'>=').replace(/[≤]/g,'<=').replace(/[−–—]/g,'-').replace(/[✓✔☐☑]/g,'').replace(/[^\x20-\x7e\xa0-\xff]/g,'?');
 export async function createStaffPdf(staff,prof,state,periods=PERIODS,demo=false){
@@ -28,7 +28,7 @@ export async function createStaffPdf(staff,prof,state,periods=PERIODS,demo=false
   const totalLines=rowPlan.reduce((n,g)=>n+g.rows.reduce((s,i)=>s+Math.max(1,i.wrapped.length),0),0);
   const rowCount=all.length;const base=Math.min(24,Math.max(13,(420-23*active.length-9*(totalLines-rowCount))/Math.max(1,rowCount)));
   for(const g of rowPlan){rect(left,y,right-left,20,gray);text('No.',cols[0]+3,y+5,8.6,{bold:true,max:28,center:true});text('Indikator '+(g.g===GROUPS[2]?'Kinerja Klinis Primer':g.g),cols[1]+4,y+5,8.7,{bold:true,max:300});text('Trigger',cols[2],y+5,8.5,{bold:true,center:true,max:70});text('Hasil',cols[3],y+5,8.5,{bold:true,center:true,max:54});text('Keterangan',cols[4],y+5,8.5,{bold:true,center:true,max:118});y+=20;
-   for(const i of g.rows){const v=a.items?.[i.id]||{},h=base+Math.max(0,i.wrapped.length-1)*9;const mid=y+(h-9)/2;text(i.number,cols[0],mid,8.5,{center:true,max:32});i.wrapped.forEach((s,j)=>text(s,cols[1]+3,y+(h-i.wrapped.length*9)/2+j*9,8.6,{max:300}));text(i.trigger,cols[2]+2,mid,8.1,{center:true,max:66});text(v.value||'-',cols[3]+2,mid,8.1,{center:true,max:50});check(cols[4]+5,mid+1,v.result==='Baik');text('Baik',cols[4]+15,mid,8.1,{max:39});check(cols[4]+55,mid+1,v.result==='Kurang');text('Kurang',cols[4]+65,mid,8.1,{max:48});line(left,y+h,right,y+h,.6);y+=h}
+   for(const i of g.rows){const v=resolvedItem(i,a.items?.[i.id]),h=base+Math.max(0,i.wrapped.length-1)*9;const mid=y+(h-9)/2;text(i.number,cols[0],mid,8.5,{center:true,max:32});i.wrapped.forEach((s,j)=>text(s,cols[1]+3,y+(h-i.wrapped.length*9)/2+j*9,8.6,{max:300}));text(i.trigger,cols[2]+2,mid,8.1,{center:true,max:66});text(v.value||'-',cols[3]+2,mid,8.1,{center:true,max:50});check(cols[4]+5,mid+1,v.result==='Baik');text('Baik',cols[4]+15,mid,8.1,{max:39});check(cols[4]+55,mid+1,v.result==='Kurang');text('Kurang',cols[4]+65,mid,8.1,{max:48});line(left,y+h,right,y+h,.6);y+=h}
    y+=7;
   }
   y+=3;const xs=[15,143,273,407,595],heads=['Jumlah Penilaian Baik','Jumlah Indikator Dinilai','Total Nilai OPPE (%)','Kategori'];for(let j=0;j<4;j++){rect(xs[j],y,xs[j+1]-xs[j],24);text(heads[j],xs[j]+2,y+7,8.2,{bold:true,center:true,max:xs[j+1]-xs[j]-4});rect(xs[j],y+24,xs[j+1]-xs[j],48)}

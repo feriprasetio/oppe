@@ -4,7 +4,7 @@ export const ROLES={committee:'Ketua Komite Tenaga Kesehatan Lainnya',reviewer:'
 export const AREAS=['Pelayanan Bedah Sentral','Pelayanan Rawat Jalan','Pelayanan Intensive Care','Pelayanan Gawat Darurat','Pelayanan Rawat Inap','Pelayanan Penunjang'];
 export function indicators(p){const seen={};return (p?.indicators||[]).map(i=>{const k=i.category+'-'+i.number;seen[k]=(seen[k]||0)+1;return {...i,id:k+(seen[k]>1?'#'+seen[k]:'')}})}
 export function key(staff,period){return staff.id+'::'+period.year+'::'+period.quarter}
-export function score(p,a){const rows=indicators(p);const r=rows.map(i=>a?.items?.[i.id]).filter(x=>['Baik','Kurang'].includes(x?.result));const good=r.filter(x=>x.result==='Baik').length;const pct=r.length?good/r.length*100:null;return {good,n:r.length,total:rows.length,pct,category:pct===null?'Belum dinilai':pct>=90?'Sangat Baik':pct>=70?'Baik':pct>=60?'Cukup':'Kurang',missing:rows.length-r.length}}
+export function score(p,a){const rows=indicators(p);const r=rows.map(i=>resolvedItem(i,a?.items?.[i.id])).filter(x=>['Baik','Kurang'].includes(x?.result));const good=r.filter(x=>x.result==='Baik').length;const pct=r.length?good/r.length*100:null;return {good,n:r.length,total:rows.length,pct,category:pct===null?'Belum dinilai':pct>=90?'Sangat Baik':pct>=70?'Baik':pct>=60?'Cukup':'Kurang',missing:rows.length-r.length}}
 export function ended(period,now=new Date()){return now>=new Date(period.year,period.quarter*3,1)}
 // Row references are the structural mapping in the uploaded workbook, never personal data.
 const HEAD_ROWS=new Set([4,11,18,29,30,31,32,68,74,80,89,113,130,151,154,162,168]);
@@ -17,3 +17,66 @@ export function isSelf(s,staff){return !!s?.name&&(s.name.trim().toLowerCase()==
 export function status(p,a,period,staff,signers){if(!ended(period))return 'PERIODE BELUM SELESAI';if(!a||score(p,a).missing)return 'BELUM LENGKAP';if(staff.needsReview||signers.warnings?.length||!signers.reviewer?.name||!signers.committee?.name)return 'MAPPING PERLU VERIFIKASI';if(!a.evidence?.trim())return 'BUKTI BELUM DICATAT';return 'MENUNGGU PENGESAHAN'}
 export const fresh=()=>({version:2,staff:[],assessments:{},signers:{},overrides:{},assets:{}});
 export function validatePack(x,professions){if(!x||!['oppe-local-pack-v2','oppe-backup-v2'].includes(x.schema)||!Array.isArray(x.staff))throw Error('Format paket tidak sesuai.');const ids=new Set(),pids=new Set(professions.map(p=>p.id));for(const s of x.staff){if(!s.id||!s.name||!pids.has(s.professionId)||ids.has(s.id))throw Error('Identitas/profesi tidak valid atau ID ganda: '+String(s.name||''));ids.add(s.id)}return x}
+
+// OPPE working interpretation: distinguish adverse triggers from direct performance targets.
+export function ruleFor(i){
+ const raw=String(i?.trigger||'').trim().replace(/≥/g,'>=').replace(/≤/g,'<=').replace(/\s+/g,'');
+ const m=/^(>=|<=|>|<|=)?(\d+(?:[.,]\d+)?)(%|kali(?:\/(?:tahun|periode|bulan))?|kejadian|menit|jam)$/.exec(raw);
+ if(!m)return null;
+ const [,op='',num,unit]=m,n=Number(num.replace(',','.')),name=String(i.name||'').toLowerCase();
+ const adverse=/keluhan|pengulangan pemeriksaan|waktu tunggu|response time/.test(name);
+ const reject=/penolakan spesimen/.test(name);
+ let pass;
+ if(reject&&op==='<')pass='<'; // direct maximum rejection rate
+ else if(adverse&&op==='>')pass='<=';
+ else if(adverse&&op==='>=')pass='<';
+ else if(!adverse&&op==='<')pass='>=';
+ else if(!adverse&&op==='<=')pass='>';
+ else if(!adverse&&(op==='>'||op==='>='))pass=op;
+ else if(!op||op==='=')pass=n===0?'=':'>=';
+ else return null;
+ return {pass,n,unit,window:unit.endsWith('/tahun')?'tahun':unit.endsWith('/bulan')?'bulan':'periode',interpretation:reject||(!adverse&&op.startsWith('>'))?'Target langsung':op?'Batas trigger':'Target langsung'};
+}
+export function parseActual(value,rule){
+ if(!rule||value===null||value===undefined||String(value).trim()==='')return null;
+ const raw=String(value).trim().toLowerCase().replace(/\s+/g,'');
+ const m=/^(\d+(?:[.,]\d+)?)(%|kali(?:\/(?:tahun|periode|bulan))?|kejadian|menit|jam)?$/.exec(raw);
+ if(!m)return null;
+ const v=Number(m[1].replace(',','.')),u=m[2];
+ if(!Number.isFinite(v)||v<0||(u&&u!==rule.unit&&!(u==='kali'&&rule.unit.startsWith('kali/'))))return null;
+ if(rule.unit==='%'&&v>100)return null;
+ if((rule.unit.startsWith('kali')||rule.unit==='kejadian')&&!Number.isInteger(v))return null;
+ return v;
+}
+export function resultFor(i,value){
+ const rule=ruleFor(i),v=parseActual(value,rule);
+ if(v===null)return '';
+ const {pass,n}=rule,ok=pass==='>='?v>=n:pass==='>'?v>n:pass==='<='?v<=n:pass==='<'?v<n:v===n;
+ return ok?'Baik':'Kurang';
+}
+export function demoValue(i){const r=ruleFor(i);if(!r)return '';const step=r.unit.startsWith('kali')||r.unit==='kejadian'?1:.1;return String(r.pass==='>'?r.n+step:r.pass==='<'?Math.max(0,r.n-step):r.n);}
+export function resolvedItem(i,v){return {...v,result:resultFor(i,v?.value)}}
+
+// Chair identity is resolved only from the user's locally imported source row, not public names/NIP.
+export function migrateChair(pack){
+ const chair=(pack.staff||[]).find(s=>Number(s.sourceRow)===89);
+ if(!chair||!chair.name)return false;
+ const person={name:chair.name,nip:chair.employeeId||'',role:'Ketua Komite Tenaga Kesehatan Lainnya'};
+ const old=(pack.staff||[]).find(s=>Number(s.sourceRow)===94);
+ const groups=pack.signers||{};
+ for(const [g,data] of Object.entries(groups))if(g.startsWith('excel-'))data.committee={...person};
+ // Preserve explicitly configured replacements for periods, except the prior source-row-94 assignment.
+ for(const [k,o] of Object.entries(pack.overrides||{}))if(o?.committee&&old&&isSelf(o.committee,old))delete o.committee;
+ return true;
+}
+export function applyBatch(state,staff,prof,edit){
+ const rows=indicators(prof),changed=edit.items||{};
+ for(const period of PERIODS){
+  const k=key(staff,period),a=state.assessments[k]||{staffId:staff.id,professionId:staff.professionId,year:period.year,quarter:period.quarter,items:{},areas:[]};
+  for(const i of rows){const patch=changed[i.id];if(!patch)continue;const prev=a.items[i.id]||{};const next={...prev,...patch};next.result=resultFor(i,next.value);a.items[i.id]=next;}
+  if(edit.areas!==undefined)a.areas=[...edit.areas];
+  if(edit.evidence!==undefined)a.evidence=edit.evidence;
+  a.updatedAt=new Date().toISOString();if(!ended(period))a.provisional=true;
+  state.assessments[k]=a;
+ }
+}
