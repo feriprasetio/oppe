@@ -14,7 +14,7 @@ export function rawSignerSet(state,staff,period){return {...(state.signers[staff
 export function signerSet(state,staff,period){const raw=rawSignerSet(state,staff,period),head=isHead(staff,raw),direct=staff.directSection===true;let reviewer=(head||direct)?raw.supervisor:raw.reviewer;let committee=raw.committee;const warnings=[];if(!reviewer?.name)warnings.push(head||direct?'Kepala seksi/atasan belum ditetapkan':'Kepala ruangan belum ditetapkan');if(reviewer?.proposed){warnings.push('Penilai usulan belum dikonfirmasi');reviewer={}}if(head&&reviewer?.name&&!/\b(?:kepala\s+seksi|kasi)\b/i.test(reviewer.role||'')){warnings.push('Atasan di Excel bukan Kepala Seksi; konfirmasi kewenangan');reviewer={}}if(isSelf(reviewer,staff)){warnings.push('Penilai tidak boleh menilai diri sendiri');reviewer={}}if(!committee?.name)warnings.push('Ketua komite/pengganti belum ditetapkan');if(isSelf(committee,staff)){warnings.push('Ketua komite yang dinilai memerlukan pengganti berwenang');committee={}}if(committee?.name&&reviewer?.name&&isSelf(committee,{name:reviewer.name,employeeId:reviewer.nip||''})){warnings.push('Kedua penandatangan harus berbeda');committee={}}return {reviewer:reviewer||{},committee:committee||{},head,direct,warnings}}
 
 export function isSelf(s,staff){return !!s?.name&&(s.name.trim().toLowerCase()===staff.name.trim().toLowerCase()||!!(s.nip&&staff.employeeId&&s.nip.replace(/\s/g,'')===staff.employeeId.replace(/\s/g,'')&&s.nip.replace(/\s/g,'').length>=10))}
-export function status(p,a,period,staff,signers){if(!ended(period))return 'PERIODE BELUM SELESAI';if(!a||score(p,a).missing)return 'BELUM LENGKAP';if(staff.needsReview||signers.warnings?.length||!signers.reviewer?.name||!signers.committee?.name)return 'MAPPING PERLU VERIFIKASI';if(!a.evidence?.trim())return 'BUKTI BELUM DICATAT';return 'MENUNGGU PENGESAHAN'}
+export function status(p,a,period,staff,signers){if(!ended(period))return 'PERIODE BELUM SELESAI';if(a?.provisional)return 'CAPAIAN SEMENTARA - PERLU VALIDASI ULANG';if(!a||score(p,a).missing)return 'BELUM LENGKAP';if(staff.needsReview||signers.warnings?.length||!signers.reviewer?.name||!signers.committee?.name)return 'MAPPING PERLU VERIFIKASI';if(!a.evidence?.trim())return 'BUKTI BELUM DICATAT';return 'MENUNGGU PENGESAHAN'}
 export const fresh=()=>({version:2,staff:[],assessments:{},signers:{},overrides:{},assets:{}});
 export function validatePack(x,professions){if(!x||!['oppe-local-pack-v2','oppe-backup-v2'].includes(x.schema)||!Array.isArray(x.staff))throw Error('Format paket tidak sesuai.');const ids=new Set(),pids=new Set(professions.map(p=>p.id));for(const s of x.staff){if(!s.id||!s.name||!pids.has(s.professionId)||ids.has(s.id))throw Error('Identitas/profesi tidak valid atau ID ganda: '+String(s.name||''));ids.add(s.id)}return x}
 
@@ -62,11 +62,11 @@ export function migrateChair(pack){
  const chair=(pack.staff||[]).find(s=>Number(s.sourceRow)===89);
  if(!chair||!chair.name)return false;
  const person={name:chair.name,nip:chair.employeeId||'',role:'Ketua Komite Tenaga Kesehatan Lainnya'};
- const old=(pack.staff||[]).find(s=>Number(s.sourceRow)===94);
+ const former=(pack.staff||[]).filter(s=>[11,94].includes(Number(s.sourceRow)));
  const groups=pack.signers||{};
  for(const [g,data] of Object.entries(groups))if(g.startsWith('excel-'))data.committee={...person};
  // Preserve explicitly configured replacements for periods, except the prior source-row-94 assignment.
- for(const [k,o] of Object.entries(pack.overrides||{}))if(o?.committee&&old&&isSelf(o.committee,old))delete o.committee;
+ for(const [k,o] of Object.entries(pack.overrides||{}))if(o?.committee&&former.some(old=>isSelf(o.committee,old))&&!k.startsWith(chair.id+'::'))delete o.committee;
  return true;
 }
 export function applyBatch(state,staff,prof,edit){
@@ -77,6 +77,7 @@ export function applyBatch(state,staff,prof,edit){
   if(edit.areas!==undefined)a.areas=[...edit.areas];
   if(edit.evidence!==undefined)a.evidence=edit.evidence;
   a.updatedAt=new Date().toISOString();if(!ended(period))a.provisional=true;
+  else if(a.provisional&&rows.every(i=>Object.hasOwn(changed[i.id]||{},'value')&&resultFor(i,changed[i.id].value))&&edit.evidence?.trim())a.provisional=false;
   state.assessments[k]=a;
  }
 }
