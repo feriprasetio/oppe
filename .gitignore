@@ -1,0 +1,7 @@
+# Never store actual OPPE data, accounts or signing assets in Git
+backend/node_modules/
+backend/config.local.json
+backend/records/
+.env
+*.private.json
+*.private.pdf

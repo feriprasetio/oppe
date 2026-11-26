@@ -1,0 +1,50 @@
+{
+  "accounts": [
+    {
+      "id": "admin-example",
+      "name": "Administrator Fiktif",
+      "nip": "DEMO-ADMIN",
+      "role": "Administrator",
+      "permissions": [
+        "admin"
+      ],
+      "passwordHash": "REPLACE_WITH_HASH"
+    },
+    {
+      "id": "reviewer-example",
+      "name": "Penilai Fiktif",
+      "nip": "DEMO-REVIEWER",
+      "role": "Kepala Ruangan",
+      "permissions": [
+        "reviewer"
+      ],
+      "passwordHash": "REPLACE_WITH_HASH"
+    },
+    {
+      "id": "committee-example",
+      "name": "Komite Fiktif",
+      "nip": "DEMO-COMMITTEE",
+      "role": "Ketua Komite",
+      "permissions": [
+        "committee"
+      ],
+      "passwordHash": "REPLACE_WITH_HASH"
+    }
+  ],
+  "staff": [
+    {
+      "id": "mapping-row-example",
+      "name": "Staf Fiktif",
+      "employeeId": "DEMO",
+      "professionId": "profession-32",
+      "unit": "Unit contoh",
+      "job": "Staf",
+      "isHead": false,
+      "needsReview": false,
+      "assignment": {
+        "reviewer": "reviewer-example",
+        "committee": "committee-example"
+      }
+    }
+  ]
+}
