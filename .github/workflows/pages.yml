@@ -43,6 +43,7 @@ jobs:
           for f in src/*.js; do node --check "$f"; done
           python3 -c "import json; d=json.load(open('data/professions.json', encoding='utf-8')); assert len(d) == 49"
           node tests/model.test.mjs
+          node tests/final.test.mjs
           echo "JavaScript syntax and catalogue OK."
 
       - name: Install pinned browser libraries

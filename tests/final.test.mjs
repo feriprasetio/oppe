@@ -1,0 +1,8 @@
+import assert from 'node:assert/strict';import fs from 'node:fs';import {PERIODS,indicators,score,key,fresh,demoValue} from '../src/model.js';import {finalReadiness,snapshot} from '../src/final-archive.js';
+const profile=JSON.parse(fs.readFileSync('data/professions.json','utf8'))[31],staff={id:'fictional',name:'Example only',professionId:profile.id,group:'example',needsReview:false},s=fresh();s.signers.example={reviewer:{name:'Fictional reviewer',role:'Kepala ruang'},committee:{name:'Fictional committee',role:'Ketua Komite'}};
+for(const q of PERIODS)s.assessments[key(staff,q)]={items:Object.fromEntries(indicators(profile).map(i=>[i.id,{value:demoValue(i)}])),evidence:'Test fixture only'};
+assert.equal(finalReadiness(s,staff,profile,new Date(2026,10,26)).length,1);assert.equal(finalReadiness(s,staff,profile,new Date(2027,0,1)).length,0);
+const old=snapshot(s,staff,profile);s.assessments[key(staff,PERIODS[0])].evidence='Changed test fixture';assert.notEqual(snapshot(s,staff,profile),old);
+s.assessments[key(staff,PERIODS[0])].evidence='';assert.equal(finalReadiness(s,staff,profile,new Date(2027,0,1)).length,1);
+s.assessments[key(staff,PERIODS[0])].evidence='Test';s.assessments[key(staff,PERIODS[11])].provisional=true;assert.equal(finalReadiness(s,staff,profile,new Date(2027,0,1)).length,1);
+console.log('Final archive readiness, period closure, evidence, and revision tests passed');
