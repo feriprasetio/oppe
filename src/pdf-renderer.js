@@ -16,7 +16,7 @@ export async function createStaffPdf(staff,prof,state,periods=PERIODS,demo=false
   function img(k,x,y,w,h,opacity=1){if(!images[k])return;const im=images[k],scale=Math.min(w/im.width,h/im.height);page.drawImage(im,{x:x+(w-im.width*scale)/2,y:H-y-h+(h-im.height*scale)/2,width:im.width*scale,height:im.height*scale,opacity})}
   img('watermark',114,330,382,445,.10);img('city',18,12,70,63);img('hospital',521,9,70,67);
   text('On Going Proffesional Practice Evaluation',95,13,15,{bold:true,center:true,max:420});text('Staff Medis dan Tenaga Kesehatan',95,32,14,{bold:true,center:true,max:420});text('Rumah Sakit Umum Daerah Sultan Syarif Mohamad Alkadrie',91,52,11.5,{center:true,max:428});line(14,77,596,77,1.8);
-  text(demo?'SIMULASI - DATA FIKTIF - BUKAN HASIL PENILAIAN':'DRAF - '+status(prof,a,period,staff,signers),15,82,8,{center:true,max:580,bold:true,color:muted});
+  text(demo?'SIMULASI - DATA FIKTIF - BUKAN HASIL PENILAIAN':status(prof,a,period,staff,signers),15,82,8,{center:true,max:580,bold:true,color:muted});
   const labels=[['Nama Staf',staff.name],['NIP / ID',staff.employeeId||'-'],['Profesi / SMF',prof.name],['Unit kerja',staff.unit||'-']];
   labels.forEach((r,i)=>{text(r[0],17,99+i*17,9,{bold:true,max:113});text(':',130,99+i*17,9);text(r[1],143,99+i*17,9,{max:449})});
   text('Wilayah Kerja',17,171,9,{bold:true,max:113});text(':',130,171,9);
@@ -35,10 +35,10 @@ export async function createStaffPdf(staff,prof,state,periods=PERIODS,demo=false
   [summary.good,summary.n,summary.pct===null?'-':summary.pct.toFixed(2)+'%'].forEach((v,j)=>text(v,xs[j]+3,y+42,12,{bold:true,center:true,max:xs[j+1]-xs[j]-6}));
   ['Sangat Baik (90-100%)','Baik (70-<90%)','Cukup (60-<70%)','Kurang (<60%)'].forEach((c,j)=>{check(xs[3]+7,y+28+j*10.5,summary.category===['Sangat Baik','Baik','Cukup','Kurang'][j]);text(c,xs[3]+18,y+27+j*10.5,8,{max:165})});y+=80;
   if(a.evidence)text('Referensi bukti: '+a.evidence,17,y,7.4,{max:575});y+=12;
-  const sigY=Math.max(y,785);const slots=[['committee',0],['reviewer',1],['supervisor',2]];
-  slots.forEach(([role,j])=>{const x=17+j*193,s=signers[role]||{};text(ROLES[role],x,sigY,8.6,{bold:true,center:true,max:190});text(s.role||'',x,sigY+12,7.2,{center:true,max:190});line(x+12,sigY+54,x+178,sigY+54,.6);text(s.name||'Nama belum diisi',x,sigY+58,8.3,{center:true,max:190});text(s.nip?'NIP. '+s.nip:'Nama / NIP',x,sigY+70,7.6,{center:true,max:190})});
+  const sigY=Math.max(y,785);const slots=[['committee',0],['reviewer',1]];
+  slots.forEach(([role,j])=>{const x=22+j*290,s=signers[role]||{};text(role==='committee'?'Mengetahui,':'Penilai,',x,sigY,9,{bold:true,center:true,max:275});text(role==='committee'?'Ketua Komite Tenaga Kesehatan Lainnya':s.role||(signers.head||signers.direct?'Kepala Seksi':'Kepala Ruangan / Unit'),x,sigY+13,8.4,{center:true,max:275});line(x+38,sigY+54,x+237,sigY+54,.6);text(s.name||'____________________________',x,sigY+58,9,{center:true,max:275});text(s.nip?'NIP. '+s.nip:'Nama / NIP',x,sigY+70,8,{center:true,max:275})});
   if(sigY+85>H-12)throw Error('Layout melebihi halaman untuk '+prof.name);
-  text('OPPE | '+period.label+' | '+(demo?'SIMULASI':'DRAF'),15,H-17,6.8,{color:muted,max:580,center:true});
+  text('OPPE | '+period.label+' | '+(demo?'SIMULASI':'BELUM DISAHKAN'),15,H-17,6.8,{color:muted,max:580,center:true});
  }
  const bytes=await doc.save();if(doc.getPageCount()!==periods.length)throw Error('Jumlah halaman tidak sesuai');return bytes;
 }

@@ -9,3 +9,6 @@ PDF-lib draws a one-page vector reconstruction per quarter, using source geometr
 
 ## Privacy
 Browser localStorage is not an authenticated or encrypted clinical record system. Use only on authorized devices, back up privately, and delete when done. GitHub Pages frontend is public, not the data. Vendor PDF-lib and JSZip are pinned and copied into the deployment by Actions; no runtime third-party script/CDN is used. No backend or real signature workflow is present.
+
+## V3 hierarchy
+Two unsigned approval slots per page: committee chair plus room/unit head for staff, or section head for room/unit heads. Source-row mapping includes the three pharmacy sub-unit heads; missing/ambiguous or self-signing assignments are blocked from automatic naming. Use per-period overrides for authorized replacements. PDF status describes incomplete or pending approval records; no fabricated measurements or copied signatures. Import revised mapping package to refresh group names without overwriting assessments.
