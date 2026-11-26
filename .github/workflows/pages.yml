@@ -37,7 +37,11 @@ jobs:
           set -euo pipefail
           for f in src/*.js; do node --check "$f"; done
           python3 -c "import json; d=json.load(open('data/professions.json', encoding='utf-8')); assert len(d) == 49"
+          node --experimental-default-type=module tests/model.test.mjs
           echo "JavaScript syntax and catalogue OK."
+
+      - name: Install pinned browser libraries
+        run: npm install --prefix /tmp/oppe-vendor --no-audit --no-fund --ignore-scripts pdf-lib@1.17.1 jszip@3.10.1
 
       - name: Assemble Pages artifact
         run: |
@@ -46,6 +50,9 @@ jobs:
           mkdir -p _site
           cp index.html _site/index.html
           cp -R src data _site/
+          mkdir -p _site/vendor
+          cp /tmp/oppe-vendor/node_modules/pdf-lib/dist/pdf-lib.min.js _site/vendor/
+          cp /tmp/oppe-vendor/node_modules/jszip/dist/jszip.min.js _site/vendor/
           if [ -d assets ]; then cp -R assets _site/; fi
           if [ -d docs ]; then cp -R docs _site/; fi
           touch _site/.nojekyll
@@ -100,6 +107,8 @@ jobs:
           assert indicators == 493, f'Expected 493 indicators, found {indicators}'
           print(f'Published catalogue OK: {len(data)} professions / {indicators} indicators')
           PY
+          curl --fail --silent --show-error "$PAGES_URL/vendor/pdf-lib.min.js" -o /tmp/oppe-pdf-lib.js
+          curl --fail --silent --show-error "$PAGES_URL/vendor/jszip.min.js" -o /tmp/oppe-jszip.js
           grep -q 'src/styles.css' /tmp/oppe-index.html
           grep -q 'src/app.js' /tmp/oppe-index.html
           echo "Pages URL and all frontend assets respond successfully: $PAGES_URL"

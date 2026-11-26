@@ -1,31 +1,11 @@
-# OPPE Digital — RSUD Sultan Syarif Mohamad Alkadrie
+# OPPE Digital V2 — RSUD Sultan Syarif Mohamad Alkadrie
+Static GitHub Pages workspace: https://feriprasetio.github.io/oppe/
 
-Standalone web application prototype, independent of AUREKA and without Supabase.
+## Usage
+Import the private OPPE local package (JSON generated from the source workbook and Word artwork) through Data tenaga kesehatan. No staff data, signatures, or evaluation records are included in this public repository. The package contains 146 rows and 21 source groups; ambiguous assignments must be checked. The app supports editing staff, entering actual measurements and notes per indicator, local autosave, signer mapping per group or individual quarter, twelve chronological PDF pages per staff, ZIP export and backup/restore. Demo uses fictional staff only, clearly labeled.
 
-**Published site:** https://feriprasetio.github.io/oppe/
+## Document design
+PDF-lib draws a one-page vector reconstruction per quarter, using source geometry 609.9874 x 936 points, indicator groups and triggers from the 49-profile catalogue, original logo artwork when imported, checkbox areas and score table. Signer names are mapped from the Excel group, with three blank approval positions. All real staff output remains a draft; no automatic approval or signature image is inserted. Source Word rendering has layout overflow on some pages; reconstruction is not pixel identical. Source trigger operators are preserved semantically; unsupported glyphs are represented as >= or <=. The actual source needs institutional review, particularly annual indicators and category boundaries.
 
-## Current deployment
-- GitHub Pages deployment from GitHub Actions.
-- Post-deploy smoke test checks the public HTML, CSS, JavaScript and profession catalogue.
-- Source catalogue contains 49 profession profiles and 493 indicators/trigger texts.
-- Profession-filtered staff selection and local-browser draft form are implemented as a prototype.
-
-## Run locally
-Serve the repository root over HTTP (ES modules and fetch do not work reliably from `file://`):
-
-```bash
-python -m http.server 8000
-```
-
-Open http://localhost:8000.
-
-## Important limitations
-- Current staff and assessment records use browser localStorage; data is not yet shared across users or devices.
-- Signature upload, authenticated approval, server database and durable audit history are not yet implemented.
-- The 49 source-background PDF pages and coordinate maps are not yet committed to this repository.
-- Current print output is a basic HTML reconstruction, not a pixel-identical reproduction of the source DOCX/PDF.
-- Trigger wording is preserved as source data but is not automatically treated as a pass/fail rule. Scoring rules require institutional approval.
-
-Do not enter real staff personal data or upload authentic signatures until private backend storage, authentication and access controls are implemented.
-
-See `docs/ARCHITECTURE.md`, `docs/SOURCE-MAPPING.md` and `docs/STATUS.md`.
+## Privacy
+Browser localStorage is not an authenticated or encrypted clinical record system. Use only on authorized devices, back up privately, and delete when done. GitHub Pages frontend is public, not the data. Vendor PDF-lib and JSZip are pinned and copied into the deployment by Actions; no runtime third-party script/CDN is used. No backend or real signature workflow is present.

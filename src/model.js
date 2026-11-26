@@ -1,0 +1,13 @@
+export const PERIODS=Array.from({length:12},(_,i)=>({year:2024+Math.floor(i/4),quarter:i%4+1,id:(2024+Math.floor(i/4))+'-'+(i%4+1),label:'Triwulan '+['I','II','III','IV'][i%4]+' '+(2024+Math.floor(i/4))}));
+export const GROUPS=['Perilaku','Pengembangan Profesionalisme','Kinerja Klinis/Profesional Primer'];
+export const ROLES={committee:'Ketua Komite Nakes Lain',reviewer:'Penilai OPPE',supervisor:'Atasan Penilai OPPE'};
+export const AREAS=['Pelayanan Bedah Sentral','Pelayanan Rawat Jalan','Pelayanan Intensive Care','Pelayanan Gawat Darurat','Pelayanan Rawat Inap','Pelayanan Penunjang'];
+export function indicators(p){const seen={};return (p?.indicators||[]).map(i=>{const k=i.category+'-'+i.number;seen[k]=(seen[k]||0)+1;return {...i,id:k+(seen[k]>1?'#'+seen[k]:'')}})}
+export function key(staff,period){return staff.id+'::'+period.year+'::'+period.quarter}
+export function score(p,a){const rows=indicators(p);const r=rows.map(i=>a?.items?.[i.id]).filter(x=>['Baik','Kurang'].includes(x?.result));const good=r.filter(x=>x.result==='Baik').length;const pct=r.length?good/r.length*100:null;return {good,n:r.length,total:rows.length,pct,category:pct===null?'Belum dinilai':pct>=90?'Sangat Baik':pct>=70?'Baik':pct>=60?'Cukup':'Kurang',missing:rows.length-r.length}}
+export function ended(period,now=new Date()){return now>=new Date(period.year,period.quarter*3,1)}
+export function signerSet(state,staff,period){return {...(state.signers[staff.group]||{}),...(state.overrides[key(staff,period)]||{})}}
+export function isSelf(s,staff){return !!s?.name&&(s.name.trim().toLowerCase()===staff.name.trim().toLowerCase()||!!(s.nip&&staff.employeeId&&s.nip.replace(/\s/g,'')===staff.employeeId.replace(/\s/g,'')&&s.nip.replace(/\s/g,'').length>=10))}
+export function status(p,a,period,staff,signers){if(!ended(period))return 'PERIODE BELUM SELESAI';if(!a||score(p,a).missing)return 'BELUM LENGKAP';if(staff.needsReview||Object.keys(ROLES).some(r=>!signers[r]?.name||isSelf(signers[r],staff)))return 'MAPPING PERLU VERIFIKASI';if(!a.evidence?.trim())return 'BUKTI BELUM DICATAT';return 'DRAF UNTUK VERIFIKASI'}
+export const fresh=()=>({version:2,staff:[],assessments:{},signers:{},overrides:{},assets:{}});
+export function validatePack(x,professions){if(!x||!['oppe-local-pack-v2','oppe-backup-v2'].includes(x.schema)||!Array.isArray(x.staff))throw Error('Format paket tidak sesuai.');const ids=new Set(),pids=new Set(professions.map(p=>p.id));for(const s of x.staff){if(!s.id||!s.name||!pids.has(s.professionId)||ids.has(s.id))throw Error('Identitas/profesi tidak valid atau ID ganda: '+String(s.name||''));ids.add(s.id)}return x}
