@@ -46,6 +46,7 @@ jobs:
           node tests/final.test.mjs
           node tests/private-approval.test.mjs
           node tests/export-ui.test.mjs
+          node tests/signature-vault.test.mjs
           for f in backend/*.js backend/*.mjs; do node --check "$f"; done
           echo "JavaScript syntax and catalogue OK."
 

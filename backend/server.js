@@ -4,6 +4,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {randomBytes,randomUUID} from 'node:crypto';
 import PDFLib from 'pdf-lib';
+import {createAssetVault,canManageAsset} from './signature-vault.js';
 import {createStaffPdf} from '../src/pdf-renderer.js';
 import {PERIODS} from '../src/model.js';
 import {hash,passwordMatches,validateConfig,buildRequest,duties,mayRead,allApproved,acceptApproval} from './approval-core.js';
@@ -11,6 +12,7 @@ const root=path.dirname(fileURLToPath(import.meta.url)),origin=new URL(process.e
 if(!process.env.OPPE_CONFIG||!process.env.OPPE_DATA_DIR||!process.env.OPPE_ORIGIN||!origin.startsWith('https://'))throw Error('Set OPPE_CONFIG, OPPE_DATA_DIR dan OPPE_ORIGIN HTTPS');
 const config=validateConfig(JSON.parse(fs.readFileSync(process.env.OPPE_CONFIG,'utf8'))),catalog=JSON.parse(fs.readFileSync(path.join(root,'../data/professions.json'),'utf8')),store=path.resolve(process.env.OPPE_DATA_DIR);
 fs.mkdirSync(store,{recursive:true,mode:0o700});if((fs.statSync(store).mode&0o077)!==0)throw Error('Direktori data harus privat (chmod 700)');
+const assetVault=process.env.OPPE_ASSET_KEY?createAssetVault(path.join(store,'signature-assets'),process.env.OPPE_ASSET_KEY):null;
 globalThis.window={PDFLib};const sessions=new Map(),attempts=new Map(),locks=new Set(),ID=/^[0-9a-f-]{36}$/;
 const publicUser=u=>({id:u.id,name:u.name,role:u.role,permissions:u.permissions});
 const file=(id,ext)=>{if(!ID.test(id))throw Error('ID dokumen tidak valid');return path.join(store,id+ext)};
@@ -54,6 +56,20 @@ const server=http.createServer(async(req,res)=>{
  const session=current(req);if(!session)return reply(res,401,{error:'Login diperlukan'});const user=session.u;
  if(req.method==='POST'&&p==='/api/logout'){sessions.delete(session.t);res.setHeader('Set-Cookie','__Host-oppe=; Secure; HttpOnly; SameSite=Strict; Path=/; Max-Age=0');return reply(res,200,{ok:true})}
  if(req.method==='GET'&&p==='/api/me')return reply(res,200,publicUser(user));
+ if(p==='/api/my-signature'||p==='/api/my-signature/remove'){
+  if(!canManageAsset(user))return reply(res,403,{error:'Khusus akun penandatangan'});
+  if(!assetVault)return reply(res,503,{error:'Penyimpanan aset privat belum dikonfigurasi'});
+  if(req.method==='GET'&&p==='/api/my-signature'){const a=assetVault.get(user);return reply(res,200,a?{image:a.image,digest:a.digest,updatedAt:a.updatedAt}:null)}
+  if(req.method==='POST'){
+   const x=await body(req,1000000);
+   if(x.confirmed!==true||!passwordMatches(String(x.password||'').slice(0,256),user.passwordHash))return reply(res,403,{error:'Konfirmasi pemilik dan kata sandi diperlukan'});
+   if(p.endsWith('/remove')){assetVault.remove(user);return reply(res,200,{ok:true})}
+   if(typeof x.image!=='string'||x.image.length>800000||!/^data:image\/png;base64,[A-Za-z0-9+/=]+$/.test(x.image))throw Error('PNG tidak valid');
+   const trial=await PDFLib.PDFDocument.create(),im=await trial.embedPng(x.image);if(im.width>1200||im.height>600||im.width<10||im.height<10)throw Error('Dimensi tanda tangan tidak valid');
+   const a=assetVault.save(user,x.image);return reply(res,200,{digest:a.digest,updatedAt:a.updatedAt});
+  }
+  return reply(res,405,{error:'Metode tidak diizinkan'});
+ }
  if(req.method==='GET'&&p==='/api/documents')return reply(res,200,list().filter(d=>mayRead(d,user)).map(d=>metadata(d,user)));
  if(req.method==='POST'&&p==='/api/submit'){
   if(!user.permissions.includes('admin'))return reply(res,403,{error:'Khusus administrator'});
@@ -68,8 +84,10 @@ const server=http.createServer(async(req,res)=>{
    if(locks.has(id))return reply(res,409,{error:'Dokumen sedang diproses'});locks.add(id);
    try{const x=await body(req,1000000),latest=read(id);if(x.confirmed!==true)throw Error('Konfirmasi hasil dan PDF diperlukan');if(!duties(latest,user.id).length)return reply(res,403,{error:'Tidak berwenang menyetujui'});
     // Decode and embed before accepting; reject malformed images, no public assets.
-    const trial=await PDFLib.PDFDocument.create(),im=await trial.embedPng(x.image);if(im.width>1200||im.height>600||im.width<10||im.height<10)throw Error('Dimensi tanda tangan tidak valid');
-    acceptApproval(latest,user,x.reviewHash,x.image);if(allApproved(latest))await finalPdf(latest);write(id,latest);return reply(res,200,metadata(latest,user));
+    const image=x.assetDigest?(assetVault?.forApproval(user,x.assetDigest)):x.image;
+    if(!image)throw Error('Aset tanda tangan tidak tersedia.');
+    const trial=await PDFLib.PDFDocument.create(),im=await trial.embedPng(image);if(im.width>1200||im.height>600||im.width<10||im.height<10)throw Error('Dimensi tanda tangan tidak valid');
+    acceptApproval(latest,user,x.reviewHash,image);if(allApproved(latest))await finalPdf(latest);write(id,latest);return reply(res,200,metadata(latest,user));
    }finally{locks.delete(id)}
   }
  }

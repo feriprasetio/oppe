@@ -27,3 +27,6 @@ The only individual signed-PDF export is next to the assessment save action. It 
 
 ## V7 simplified local export
 One export button beneath the assessment generates a 12-page PDF from saved records; the scope selector allows a ZIP for all staff. Approval and portal configuration panels are removed from the public interface. Existing matching signed archives are reused byte-for-byte if available; otherwise PDFs retain unsigned and ongoing-period status, with mapped signer names and empty signature lines. No automatic signature replay or approval claims. Existing local data and signed archives are not deleted by the upgrade. The separate backend source remains in the repository but is not part of the public UI.
+
+## V7.1 private personal signature assets
+The separately hosted approval portal can store a signer's own image in an account-scoped encrypted vault, with password reauthentication for changes and an explicit document approval requirement. The public one-button export remains unchanged except version label; it does not replay Excel signatures. See backend/README.md for deployment and key setup. No production backend is connected.
