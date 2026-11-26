@@ -54,7 +54,9 @@ jobs:
         run: npm install --prefix /tmp/oppe-vendor --no-audit --no-fund --ignore-scripts pdf-lib@1.17.1 jszip@3.10.1
 
       - name: Verify real 12-page PDF generation for all professions
-        run: node tests/pdf.test.mjs
+        run: |
+          node tests/pdf.test.mjs
+          node tests/auto-signature.test.mjs
 
       - name: Assemble Pages artifact
         run: |

@@ -30,3 +30,7 @@ One export button beneath the assessment generates a 12-page PDF from saved reco
 
 ## V7.1 private personal signature assets
 The separately hosted approval portal can store a signer's own image in an account-scoped encrypted vault, with password reauthentication for changes and an explicit document approval requirement. The public one-button export remains unchanged except version label; it does not replay Excel signatures. See backend/README.md for deployment and key setup. No production backend is connected.
+
+## V8 tanda tangan otomatis
+Di **Mapping penandatangan**, tiap penanda tangan (Ketua Komite, kepala ruang/unit, kepala seksi) dapat diunggahkan gambar TTD-nya sekali (PNG/JPG). Admin wajib mengonfirmasi bahwa pemilik TTD sudah memberi izin; tanggal izin disimpan bersama gambar. TTD dicocokkan per orang (NIP, atau nama bila NIP kosong), dikecilkan, latar putih dibuat transparan, dan disimpan hanya di browser/backup privat — tidak pernah di repo.
+Saat ekspor, TTD dibubuhkan otomatis hanya pada triwulan yang statusnya lengkap (periode selesai, semua indikator terisi, bukti dicatat, mapping terverifikasi). Halaman dengan kedua TTD bertanda "TELAH DITANDATANGANI"; triwulan yang belum lengkap tetap memakai garis kosong. Mode simulasi tidak pernah memakai TTD.
