@@ -6,3 +6,4 @@
 .inline-export-state{margin:8px 0 12px;padding:10px 13px;border:1px solid var(--border);border-radius:8px;background:#f5f8fa;font-size:13px;line-height:1.6;overflow-wrap:anywhere}.inline-export-state[data-state=ready]{color:#246b43;background:#f0f8f3}.inline-export-state[data-state=pending]{color:#795316;background:#fffaf0}.inline-export-state a{color:#176b83;font-weight:650;text-decoration:underline}#unsignedTools,#externalArchive{margin-top:14px}#externalArchive summary{margin-bottom:8px}
 
 .export-scope{min-width:175px;max-width:100%;align-self:flex-end}.actions:has(#exportPdf){align-items:flex-end}.period-details{margin-top:8px}.period-details .periods{margin-top:10px}
+.sigbox{border:1px dashed #c9d6df;border-radius:8px;padding:10px;display:grid;gap:6px;background:#fafcfd}.sigbox img{max-width:100%;max-height:70px;object-fit:contain;justify-self:start;background:#fff}.sigbox .actions{margin:0}.filebtn.secondary{color:#234a60}

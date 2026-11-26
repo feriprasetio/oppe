@@ -15,7 +15,7 @@ export function signerSet(state,staff,period){const raw=rawSignerSet(state,staff
 
 export function isSelf(s,staff){return !!s?.name&&(s.name.trim().toLowerCase()===staff.name.trim().toLowerCase()||!!(s.nip&&staff.employeeId&&s.nip.replace(/\s/g,'')===staff.employeeId.replace(/\s/g,'')&&s.nip.replace(/\s/g,'').length>=10))}
 export function status(p,a,period,staff,signers){if(!ended(period))return 'PERIODE BELUM SELESAI';if(a?.provisional)return 'CAPAIAN SEMENTARA - PERLU VALIDASI ULANG';if(!a||score(p,a).missing)return 'BELUM LENGKAP';if(staff.needsReview||signers.warnings?.length||!signers.reviewer?.name||!signers.committee?.name)return 'MAPPING PERLU VERIFIKASI';if(!a.evidence?.trim())return 'BUKTI BELUM DICATAT';return 'MENUNGGU PENGESAHAN'}
-export const fresh=()=>({version:2,staff:[],assessments:{},signers:{},overrides:{},assets:{}});
+export const fresh=()=>({version:2,staff:[],assessments:{},signers:{},overrides:{},assets:{},signatures:{}});
 export function validatePack(x,professions){if(!x||!['oppe-local-pack-v2','oppe-backup-v2'].includes(x.schema)||!Array.isArray(x.staff))throw Error('Format paket tidak sesuai.');const ids=new Set(),pids=new Set(professions.map(p=>p.id));for(const s of x.staff){if(!s.id||!s.name||!pids.has(s.professionId)||ids.has(s.id))throw Error('Identitas/profesi tidak valid atau ID ganda: '+String(s.name||''));ids.add(s.id)}return x}
 
 // OPPE working interpretation: distinguish adverse triggers from direct performance targets.
@@ -81,3 +81,11 @@ export function applyBatch(state,staff,prof,edit){
   state.assessments[k]=a;
  }
 }
+
+// Tanda tangan otomatis: gambar TTD milik penanda tangan (bukan dari Excel), disimpan lokal
+// bersama catatan izin pemiliknya. Dikunci pada identitas orang (NIP, atau nama bila NIP kosong).
+export function signerKey(s){const nip=String(s?.nip||'').replace(/\D/g,'');if(nip.length>=10)return 'nip:'+nip;const name=String(s?.name||'').trim().toLowerCase().replace(/\s+/g,' ');return name?'name:'+name:''}
+export function signatureFor(state,signer){const k=signerKey(signer),sig=k&&state?.signatures?.[k];return sig&&sig.image&&sig.consentAt?sig:null}
+// TTD hanya dibubuhkan pada halaman yang penilaiannya lengkap dan mapping-nya sudah terverifikasi.
+export function signablePeriod(p,a,period,staff,signers){return status(p,a,period,staff,signers)==='MENUNGGU PENGESAHAN'}
+export function signedCount(state,staff,p,periods=PERIODS){let n=0;for(const q of periods){const a=state.assessments[key(staff,q)],sg=signerSet(state,staff,q);if(signablePeriod(p,a,q,staff,sg)&&signatureFor(state,sg.reviewer)&&signatureFor(state,sg.committee))n++}return n}
