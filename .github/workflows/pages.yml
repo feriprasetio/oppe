@@ -23,6 +23,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
       - name: Validate required site files
         run: |
           set -euo pipefail
@@ -37,11 +42,14 @@ jobs:
           set -euo pipefail
           for f in src/*.js; do node --check "$f"; done
           python3 -c "import json; d=json.load(open('data/professions.json', encoding='utf-8')); assert len(d) == 49"
-          node --experimental-default-type=module tests/model.test.mjs
+          node tests/model.test.mjs
           echo "JavaScript syntax and catalogue OK."
 
       - name: Install pinned browser libraries
         run: npm install --prefix /tmp/oppe-vendor --no-audit --no-fund --ignore-scripts pdf-lib@1.17.1 jszip@3.10.1
+
+      - name: Verify real 12-page PDF generation for all professions
+        run: node tests/pdf.test.mjs
 
       - name: Assemble Pages artifact
         run: |
