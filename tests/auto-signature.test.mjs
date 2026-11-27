@@ -23,7 +23,9 @@ const count=d=>d.getPages().map(pg=>{const xo=pg.node.Resources()?.lookup(window
 assert.equal(imgs[0],2,'halaman lengkap memuat TTD Ketua Komite dan Penilai');assert(imgs.slice(1).every(n=>n===0),'halaman belum lengkap tanpa TTD');
 const demo=await window.PDFLib.PDFDocument.load(await createStaffPdf(staff,p,state,PERIODS,true));assert(count(demo).every(n=>n===0),'mode simulasi tidak pernah memakai TTD');
 console.log('Auto-signature: only complete, verified quarters with consented signatures are signed');
-{const {signReport,fillEvidence}=await import('../src/model.js');const st=structuredClone(state);for(const a of Object.values(st.assessments))delete a.evidence;
-let r=signReport(st,staff,p);assert.equal(r.signed,0);assert.equal(r.reasons['BUKTI BELUM DICATAT'],1,'alasan bukti kosong dilaporkan');
-assert.equal(fillEvidence(st,'Rekap logbook'),1);assert.equal(fillEvidence(st,'Lain'),0,'bukti yang ada tidak ditimpa');r=signReport(st,staff,p);assert.equal(r.signed,1);
-delete st.signatures[signerKey(committee)];r=signReport(st,staff,p);assert.deepEqual(r.missingSig,[committee.name]);console.log('Sign report & bulk evidence passed')}
+{const {signReport}=await import('../src/model.js');const st=structuredClone(state);for(const a of Object.values(st.assessments))delete a.evidence;
+let r=signReport(st,staff,p);assert.equal(r.signed,1,'TTD tidak menunggu referensi bukti');
+for(const a of Object.values(st.assessments))delete a.items[Object.keys(a.items)[0]];r=signReport(st,staff,p);assert.equal(r.signed,0);assert.equal(r.reasons['BELUM LENGKAP'],11,'indikator kosong tidak ditandatangani');
+const s2=structuredClone(state);delete s2.signatures[signerKey(committee)];r=signReport(s2,staff,p);assert.deepEqual(r.missingSig,[committee.name]);console.log('Sign report passed')}
+{const {matchAnchor}=await import('../src/xlsx-import.js');const people=[{row:18,col:1,name:'Kepala A',nip:'1'},{row:19,col:1,name:'Staf B',nip:'2'},{row:18,col:7,name:'Kasi C',nip:'3'},{row:19,col:7,name:'Kasi C',nip:'3'},{row:20,col:7,name:'Kasi C',nip:'3'}];
+assert.equal(matchAnchor(people,19,19,5)?.name,'Staf B','gambar di baris staf');assert.equal(matchAnchor(people,18,20,8)?.name,'Kasi C','gambar di blok kepala seksi kolom H');assert.equal(matchAnchor(people,40,41,5),null,'gambar jauh dari nama diabaikan');console.log('Excel signature anchor matching passed')}

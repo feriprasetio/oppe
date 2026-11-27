@@ -34,3 +34,7 @@ The separately hosted approval portal can store a signer's own image in an accou
 ## V8 tanda tangan otomatis
 Di **Mapping penandatangan**, tiap penanda tangan (Ketua Komite, kepala ruang/unit, kepala seksi) dapat diunggahkan gambar TTD-nya sekali (PNG/JPG). Admin wajib mengonfirmasi bahwa pemilik TTD sudah memberi izin; tanggal izin disimpan bersama gambar. TTD dicocokkan per orang (NIP, atau nama bila NIP kosong), dikecilkan, latar putih dibuat transparan, dan disimpan hanya di browser/backup privat — tidak pernah di repo.
 Saat ekspor, TTD dibubuhkan otomatis hanya pada triwulan yang statusnya lengkap (periode selesai, semua indikator terisi, bukti dicatat, mapping terverifikasi). Halaman dengan kedua TTD bertanda "TELAH DITANDATANGANI"; triwulan yang belum lengkap tetap memakai garis kosong. Mode simulasi tidak pernah memakai TTD.
+
+### V8.1
+- TTD dibubuhkan pada setiap triwulan yang **sudah selesai dan seluruh indikatornya terisi**; referensi bukti tidak lagi wajib.
+- **Impor Excel mapping** sekarang juga membaca gambar TTD yang ditempel di sheet (dicocokkan ke nama/NIP pada baris gambar, atau blok kepala seksi di kolom H), lalu membersihkan latarnya otomatis (putih, abu, kekuningan, foto) dan memasangnya sebagai TTD otomatis setelah konfirmasi izin.
