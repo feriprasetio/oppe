@@ -17,5 +17,22 @@ export async function importWorkbook(file){
  const committee={...person(89),role:'Ketua Komite Nakes Lain'};const staff=[],signers={};
  for(const [start,end,pid,judge,sup] of specs){const group='excel-'+start;signers[group]={reviewer:person(judge),supervisor:sup?{name:(rows[sup[0]]?.H||'').replace(/^Nama:\s*/i,''),role:(rows[sup[1]]?.H||'').replace(/^Jabatan\s*:\s*/i,''),nip:(rows[sup[2]]?.H||'').replace(/^NIP\s*[.:]?\s*/i,'')}:{},committee};for(let r=start;r<=end;r++){const a=rows[r];if(!a?.B||!/^\d+$/.test(a.A||''))throw Error('Baris staf tidak valid: '+r);const j=(a.C||'').toLowerCase();let p=pid;if(pid===39)p=j.includes('wicara')?48:j.includes('okupasi')?49:39;if(pid===34)p=j.includes('asisten')?35:34;if(pid===38&&j.includes('perawat'))p=27;staff.push({id:'mapping-row-'+r,name:clean(a.B),employeeId:a.E||'',job:a.C||'',unit:a.D||'',group,professionId:'profession-'+String(p).padStart(2,'0'),sourceRow:r,needsReview:p===27||!judge||!sup||r===judge})}}
  if(staff.length!==146)throw Error('Jumlah staf berbeda dari workbook sumber');
- const pack=normalizeMapping({schema:'oppe-local-pack-v2',staff,signers,assets:{},mappingRevision:4});migrateChair(pack);return pack;
+ const people=[];for(const r of Object.keys(rows).map(Number))if(rows[r]?.B&&/^\d{10,}$/.test(String(rows[r]?.E||'').replace(/\D/g,'')))people.push({row:r,col:1,...person(r)});
+ for(const [,,,,sup] of specs)if(sup){const sp={name:(rows[sup[0]]?.H||'').replace(/^Nama:\s*/i,''),role:(rows[sup[1]]?.H||'').replace(/^Jabatan\s*:\s*/i,''),nip:(rows[sup[2]]?.H||'').replace(/^NIP\s*[.:]?\s*/i,'')};if(sp.name)for(const r of sup)people.push({row:r,col:7,...sp})}
+ const pack=normalizeMapping({schema:'oppe-local-pack-v2',staff,signers,assets:{},mappingRevision:4});migrateChair(pack);
+ pack.signatureImages=await sheetImages(zip,people);return pack;
 }
+
+// Gambar TTD yang ditempel di sheet1: dicocokkan ke orang pada baris jangkar gambar (nama di B, NIP di E)
+// atau ke blok kepala seksi (kolom H). Gambar yang tidak jelas pemiliknya diabaikan.
+async function rels(zip,path){const f=zip.file(path);if(!f)return {};const out={};for(const r of tags(parse(await f.async('string')),'Relationship'))out[r.getAttribute('Id')]=r.getAttribute('Target');return out}
+const resolve=(base,target)=>{if(target.startsWith('/'))return target.slice(1);const parts=base.split('/');parts.pop();for(const seg of target.split('/')){if(seg==='..')parts.pop();else if(seg!=='.')parts.push(seg)}return parts.join('/')}
+export function matchAnchor(people,from,to,col){const span=p=>p.row>=from&&p.row<=to;const near=(p,d)=>Math.abs(p.row-from)<=d||Math.abs(p.row-to)<=d;const side=col>=6?people.filter(p=>p.col===7):people.filter(p=>p.col!==7);
+ for(const pool of [side,people]){const hit=pool.filter(span);const named=[...new Map(hit.map(p=>[p.nip||p.name,p])).values()];if(named.length===1)return named[0];if(named.length>1){named.sort((a,b)=>Math.abs(a.row-from)-Math.abs(b.row-from));return named[0]}const close=pool.filter(p=>near(p,1)).sort((a,b)=>Math.abs(a.row-from)-Math.abs(b.row-from));if(close.length)return close[0]}return null}
+export async function sheetImages(zip,people){const out=[];const sr=await rels(zip,'xl/worksheets/_rels/sheet1.xml.rels');
+ for(const t of Object.values(sr)){if(!/drawings\/drawing\d+\.xml$/.test(t))continue;const dpath=resolve('xl/worksheets/sheet1.xml',t),df=zip.file(dpath);if(!df)continue;const dr=await rels(zip,dpath.replace(/([^/]+)$/,'_rels/$1.rels'));const d=parse(await df.async('string'));
+  for(const anchor of [...tags(d,'twoCellAnchor'),...tags(d,'oneCellAnchor')]){const from=tags(anchor,'from')[0],to=tags(anchor,'to')[0],blip=tags(anchor,'blip')[0];if(!from||!blip)continue;
+   const num=(n,k)=>Number(tags(n,k)[0]?.textContent||0);const r0=num(from,'row')+1,c0=num(from,'col'),r1=to?num(to,'row')+1:r0;const target=dr[blip.getAttribute('r:embed')||blip.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships','embed')];if(!target)continue;
+   const mpath=resolve(dpath,target),mf=zip.file(mpath),ext=(mpath.split('.').pop()||'').toLowerCase(),mime={png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',gif:'image/gif',bmp:'image/bmp',webp:'image/webp'}[ext];if(!mf||!mime)continue;
+   const who=matchAnchor(people,r0,r1,c0);if(!who)continue;out.push({row:r0,col:c0,name:who.name,nip:who.nip,role:who.role,image:'data:'+mime+';base64,'+await mf.async('base64')})}}
+ return out}
