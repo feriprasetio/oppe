@@ -23,3 +23,7 @@ const count=d=>d.getPages().map(pg=>{const xo=pg.node.Resources()?.lookup(window
 assert.equal(imgs[0],2,'halaman lengkap memuat TTD Ketua Komite dan Penilai');assert(imgs.slice(1).every(n=>n===0),'halaman belum lengkap tanpa TTD');
 const demo=await window.PDFLib.PDFDocument.load(await createStaffPdf(staff,p,state,PERIODS,true));assert(count(demo).every(n=>n===0),'mode simulasi tidak pernah memakai TTD');
 console.log('Auto-signature: only complete, verified quarters with consented signatures are signed');
+{const {signReport,fillEvidence}=await import('../src/model.js');const st=structuredClone(state);for(const a of Object.values(st.assessments))delete a.evidence;
+let r=signReport(st,staff,p);assert.equal(r.signed,0);assert.equal(r.reasons['BUKTI BELUM DICATAT'],1,'alasan bukti kosong dilaporkan');
+assert.equal(fillEvidence(st,'Rekap logbook'),1);assert.equal(fillEvidence(st,'Lain'),0,'bukti yang ada tidak ditimpa');r=signReport(st,staff,p);assert.equal(r.signed,1);
+delete st.signatures[signerKey(committee)];r=signReport(st,staff,p);assert.deepEqual(r.missingSig,[committee.name]);console.log('Sign report & bulk evidence passed')}
